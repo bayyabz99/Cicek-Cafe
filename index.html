@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çiçek Kafe - Menü</title>
+    <style>
+        :root {
+            --primary: #2d5016;
+            --primary-light: #3d6b20;
+            --secondary: #f5f1e8;
+            --accent: #d4af37;
+            --text-dark: #2c2c2c;
+            --text-light: #666;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --shadow-hover: rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary) 0%, #fff 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--white);
+            padding: 2rem 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* Search Bar */
+        .search-container {
+            background: var(--white);
+            padding: 1rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            position: sticky;
+            top: 110px;
+            z-index: 99;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--secondary);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Category Filter */
+        .category-filter {
+            background: var(--white);
+            padding: 1rem;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px var(--shadow);
+            position: sticky;
+            top: 178px;
+            z-index: 98;
+        }
+
+        .category-filter::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .category-filter::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        .filter-btn {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            margin: 0 0.3rem;
+            border: 2px solid var(--primary);
+            background: var(--white);
+            color: var(--primary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Home View */
+        .home-view {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .welcome-text {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .welcome-subtitle {
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .category-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow-hover);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-count {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow-hover);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--secondary), #e8e0d0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .view-detail-btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .view-detail-btn:hover {
+            background: var(--primary-light);
+        }
+
+        /* Product Detail */
+        .product-detail {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .detail-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--secondary), #e8e0d0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+        }
+
+        .detail-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .detail-description {
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .detail-section {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--secondary);
+            border-radius: 12px;
+        }
+
+        .detail-section-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .detail-section-content {
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .detail-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent);
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px var(--shadow);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .scroll-top.show {
+            display: flex;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 120px;
+            right: 1rem;
+            background: var(--white);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: var(--transition);
+            z-index: 101;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        /* Dark Theme */
+        body.dark-theme {
+            --secondary: #1a1a1a;
+            --white: #2d2d2d;
+            --text-dark: #e0e0e0;
+            --text-light: #b0b0b0;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        /* Hidden Class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .no-results-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .welcome-text {
+                font-size: 1.5rem;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-container {
+                top: 95px;
+            }
+
+            .category-filter {
+                top: 163px;
+            }
+
+            .theme-toggle {
+                top: 105px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">🌸 Çiçek Kafe</div>
+        <div class="tagline">Her yudum bir hikaye...</div>
+    </header>
+
+    <button class="theme-toggle" id="themeToggle">🌙</button>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Menüde ara...">
+        </div>
+    </div>
+
+    <div class="category-filter" id="categoryFilter">
+        <button class="filter-btn active" data-category="all">Tümü</button>
+    </div>
+
+    <main id="mainContent">
+        <!-- İçerik JavaScript ile dinamik olarak yüklenecek -->
+    </main>
+
+    <button class="scroll-top" id="scrollTop">↑</button>
+
+    <script>
+        // Menü Verileri
+        const menuData = {
+            sicakIcecekler: {
+                name: 'Sıcak İçecekler',
+                icon: '☕',
+                products: [
+                    {
+                        id: 'krokan',
+                        name: 'Krokan',
+                        icon: '🥐',
+                        description: 'Tereyağlı Fransız krokanı',
+                        fullDescription: 'Taze pişirilmiş, katmanlı, tereyağlı krokan. Kahvenizin yanında mükemmel.',
+                        ingredients: 'Un, tereyağı, maya, süt',
+                        allergens: 'Glüten, süt ürünü içerir',
+                        price: '45₺'
+                    },
+                    {
+                        id: 'muffin',
+                        name: 'Muffin',
+                        icon: '🧁',
+                        description: 'Çikolatalı / Muzlu / Yaban mersinli',
+                        fullDescription: 'Yumuşacık, taze fırından çıkmış muffin, çeşitli lezzetlerde.',
+                        ingredients: 'Un, yumurta, süt, şeker, aroma',
+                        allergens: 'Glüten, süt ürünü, yumurta içerir',
+                        price: '40₺'
+                    }
+                ]
+            },
+            kahvalti: {
+                name: 'Kahvaltı',
+                icon: '🍳',
+                products: [
+                    {
+                        id: 'serpme-kahvalti',
+                        name: 'Serpme Kahvaltı',
+                        icon: '🍳',
+                        description: 'Zengin çeşitlerle (2 kişilik)',
+                        fullDescription: 'Peynir çeşitleri, zeytin, salam, sucuk, reçel, bal, kaymak, tereyağı, menemen, yumurta, sınırsız çay.',
+                        ingredients: 'Çeşitli peynirler, zeytin, et ürünleri, yumurta, ekmek',
+                        allergens: 'Glüten, süt ürünü, yumurta içerir',
+                        price: '280₺'
+                    },
+                    {
+                        id: 'omlet',
+                        name: 'Omlet',
+                        icon: '🍳',
+                        description: 'Karışık / Peynirli / Sebzeli',
+                        fullDescription: 'Taze yumurtalardan hazırlanan kabarık omlet, yanında ekmek ve çay.',
+                        ingredients: 'Yumurta, seçtiğiniz malzemeler',
+                        allergens: 'Yumurta, glüten içerir',
+                        price: '55₺'
+                    },
+                    {
+                        id: 'menemen',
+                        name: 'Menemen',
+                        icon: '🍅',
+                        description: 'Geleneksel Türk menemen',
+                        fullDescription: 'Domates, biber, yumurta ile özel baharatlarla hazırlanan enfes menemen.',
+                        ingredients: 'Yumurta, domates, biber, soğan, baharat',
+                        allergens: 'Yumurta içerir',
+                        price: '60₺'
+                    },
+                    {
+                        id: 'sahanda-yumurta',
+                        name: 'Sahanda Yumurta',
+                        icon: '🍳',
+                        description: 'Sucuklu / Pastırmalı / Sade',
+                        fullDescription: 'Tereyağında pişirilmiş taze yumurta, yanında ekmek.',
+                        ingredients: 'Yumurta, tereyağı, ekstra malzemeler',
+                        allergens: 'Yumurta, süt ürünü, glüten içerir',
+                        price: '50₺'
+                    },
+                    {
+                        id: 'pancake',
+                        name: 'Pancake',
+                        icon: '🥞',
+                        description: 'Akçaağaç şurubu ile',
+                        fullDescription: 'Yumuşacık Amerikan pancake\'i, akçaağaç şurubu, meyve ve tereyağı ile.',
+                        ingredients: 'Un, yumurta, süt, akçaağaç şurubu',
+                        allergens: 'Glüten, yumurta, süt ürünü içerir',
+                        price: '65₺'
+                    }
+                ]
+            }
+        };
+
+        // Uygulama Durumu
+        let currentView = 'home';
+        let currentCategory = 'all';
+        let currentProduct = null;
+        let isDarkTheme = false;
+
+        // DOM Elemanları
+        const mainContent = document.getElementById('mainContent');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const scrollTopBtn = document.getElementById('scrollTop');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Sayfa Yüklendiğinde
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+        });
+
+        // Uygulama Başlatma
+        function initializeApp() {
+            renderCategoryFilters();
+            showHomeView();
+            setupEventListeners();
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Arama
+            searchInput.addEventListener('input', handleSearch);
+
+            // Scroll Top
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Theme Toggle
+            themeToggle.addEventListener('click', toggleTheme);
+        }
+
+        // Kategori Filtreleri Oluştur
+        function renderCategoryFilters() {
+            let filtersHTML = '<button class="filter-btn active" data-category="all">Tümü</button>';
+            
+            for (const [key, category] of Object.entries(menuData)) {
+                filtersHTML += `<button class="filter-btn" data-category="${key}">${category.icon} ${category.name}</button>`;
+            }
+
+            categoryFilter.innerHTML = filtersHTML;
+
+            // Filter butonlarına tıklama
+            categoryFilter.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    categoryFilter.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentCategory = e.target.dataset.category;
+                    if (currentView === 'home') {
+                        showHomeView();
+                    } else {
+                        showCategoryView(currentCategory);
+                    }
+                });
+            });
+        }
+
+        // Ana Sayfa Görünümü
+        function showHomeView() {
+            currentView = 'home';
+            searchInput.value = '';
+            
+            let categoriesHTML = '<div class="home-view">';
+            categoriesHTML += '<h1 class="welcome-text">Hoş Geldiniz</h1>';
+            categoriesHTML += '<p class="welcome-subtitle">Lezzetli menümüzü keşfedin</p>';
+            categoriesHTML += '<div class="category-grid">';
+
+            for (const [key, category] of Object.entries(menuData)) {
+                if (currentCategory === 'all' || currentCategory === key) {
+                    categoriesHTML += `
+                        <div class="category-card" onclick="showCategoryView('${key}')">
+                            <div class="category-icon">${category.icon}</div>
+                            <div class="category-name">${category.name}</div>
+                            <div class="category-count">${category.products.length} ürün</div>
+                        </div>
+                    `;
+                }
+            }
+
+            categoriesHTML += '</div></div>';
+            mainContent.innerHTML = categoriesHTML;
+        }
+
+        // Kategori Görünümü
+        function showCategoryView(categoryKey) {
+            currentView = 'category';
+            
+            if (categoryKey === 'all') {
+                showAllProducts();
+                return;
+            }
+
+            const category = menuData[categoryKey];
+            let productsHTML = '<div class="product-grid">';
+
+            category.products.forEach(product => {
+                productsHTML += createProductCard(product);
+            });
+
+            productsHTML += '</div>';
+            mainContent.innerHTML = productsHTML;
+        }
+
+        // Tüm Ürünleri Göster
+        function showAllProducts() {
+            let productsHTML = '<div class="product-grid">';
+
+            for (const category of Object.values(menuData)) {
+                category.products.forEach(product => {
+                    productsHTML += createProductCard(product);
+                });
+            }
+
+            productsHTML += '</div>';
+            mainContent.innerHTML = productsHTML;
+        }
+
+        // Ürün Kartı Oluştur
+        function createProductCard(product) {
+            return `
+                <div class="product-card" onclick="showProductDetail('${product.id}')">
+                    <div class="product-image">${product.icon}</div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="product-footer">
+                            <div class="product-price">${product.price}</div>
+                            <button class="view-detail-btn">Detay</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Ürün Detay Görünümü
+        function showProductDetail(productId) {
+            currentView = 'detail';
+            let product = null;
+
+            // Ürünü bul
+            for (const category of Object.values(menuData)) {
+                const found = category.products.find(p => p.id === productId);
+                if (found) {
+                    product = found;
+                    break;
+                }
+            }
+
+            if (!product) return;
+
+            currentProduct = product;
+
+            const detailHTML = `
+                <div class="product-detail">
+                    <button class="back-btn" onclick="goBack()">← Geri Dön</button>
+                    <div class="detail-image">${product.icon}</div>
+                    <h1 class="detail-name">${product.name}</h1>
+                    <p class="detail-description">${product.fullDescription}</p>
+                    
+                    <div class="detail-section">
+                        <div class="detail-section-title">İçindekiler</div>
+                        <div class="detail-section-content">${product.ingredients}</div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="detail-section-title">Alerjen Bilgisi</div>
+                        <div class="detail-section-content">${product.allergens}</div>
+                    </div>
+                    
+                    <div class="detail-price">${product.price}</div>
+                </div>
+            `;
+
+            mainContent.innerHTML = detailHTML;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Geri Dön
+        function goBack() {
+            if (currentCategory === 'all') {
+                showHomeView();
+            } else {
+                showCategoryView(currentCategory);
+            }
+        }
+
+        // Arama Fonksiyonu
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+
+            if (searchTerm === '') {
+                if (currentView === 'home') {
+                    showHomeView();
+                } else if (currentCategory === 'all') {
+                    showAllProducts();
+                } else {
+                    showCategoryView(currentCategory);
+                }
+                return;
+            }
+
+            let results = [];
+
+            for (const category of Object.values(menuData)) {
+                category.products.forEach(product => {
+                    if (product.name.toLowerCase().includes(searchTerm) ||
+                        product.description.toLowerCase().includes(searchTerm) ||
+                        product.fullDescription.toLowerCase().includes(searchTerm)) {
+                        results.push(product);
+                    }
+                });
+            }
+
+            displaySearchResults(results, searchTerm);
+        }
+
+        // Arama Sonuçlarını Göster
+        function displaySearchResults(results, searchTerm) {
+            if (results.length === 0) {
+                mainContent.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <h2>"${searchTerm}" için sonuç bulunamadı</h2>
+                        <p>Farklı bir arama terimi deneyin</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let resultsHTML = '<div class="product-grid">';
+            results.forEach(product => {
+                resultsHTML += createProductCard(product);
+            });
+            resultsHTML += '</div>';
+
+            mainContent.innerHTML = resultsHTML;
+        }
+
+        // Tema Değiştir
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            document.body.classList.toggle('dark-theme');
+            themeToggle.textContent = isDarkTheme ? '☀️' : '🌙';
+        }
+    </script>
+</body>
+</html>
+                        id: 'tr-kahve',
+                        name: 'Türk Kahvesi',
+                        icon: '☕',
+                        description: 'Geleneksel Türk kahvesi, orta pişmiş',
+                        fullDescription: 'Özenle seçilmiş Brezilya çekirdeklerinden hazırlanan, geleneksel yöntemlerle pişirilen enfes Türk kahvesi.',
+                        ingredients: 'Kahve, su, şeker (isteğe bağlı)',
+                        allergens: 'Kafein içerir',
+                        price: '45₺'
+                    },
+                    {
+                        id: 'espresso',
+                        name: 'Espresso',
+                        icon: '☕',
+                        description: 'Yoğun aromalı İtalyan espresso',
+                        fullDescription: 'Premium Arabica çekirdeklerinden hazırlanan, tam kıvamında İtalyan espresso.',
+                        ingredients: 'Espresso kahve',
+                        allergens: 'Yüksek kafein içerir',
+                        price: '40₺'
+                    },
+                    {
+                        id: 'cappuccino',
+                        name: 'Cappuccino',
+                        icon: '☕',
+                        description: 'Kremalı süt köpüğü ile',
+                        fullDescription: 'Espresso, buharla ısıtılmış süt ve kadifemsi süt köpüğü ile hazırlanan klasik İtalyan içeceği.',
+                        ingredients: 'Espresso, süt, süt köpüğü',
+                        allergens: 'Süt ürünü, kafein içerir',
+                        price: '55₺'
+                    },
+                    {
+                        id: 'latte',
+                        name: 'Latte',
+                        icon: '☕',
+                        description: 'Yumuşak süt aromalı kahve',
+                        fullDescription: 'Espresso ve bol miktarda buharla ısıtılmış sütün mükemmel uyumu.',
+                        ingredients: 'Espresso, süt',
+                        allergens: 'Süt ürünü, kafein içerir',
+                        price: '55₺'
+                    },
+                    {
+                        id: 'mocha',
+                        name: 'Mocha',
+                        icon: '☕',
+                        description: 'Çikolatalı kahve keyfi',
+                        fullDescription: 'Espresso, çikolata sosu ve süt köpüğünün tatlı buluşması.',
+                        ingredients: 'Espresso, çikolata sosu, süt, krema',
+                        allergens: 'Süt ürünü, kakao, kafein içerir',
+                        price: '60₺'
+                    },
+                    {
+                        id: 'caramel-macchiato',
+                        name: 'Caramel Macchiato',
+                        icon: '☕',
+                        description: 'Karamel aromalı lezzet',
+                        fullDescription: 'Espresso, buharda ısıtılmış süt ve karamel sosun muhteşem kombinasyonu.',
+                        ingredients: 'Espresso, süt, karamel sosu, krema',
+                        allergens: 'Süt ürünü, kafein içerir',
+                        price: '60₺'
+                    },
+                    {
+                        id: 'sicak-cikolata',
+                        name: 'Sıcak Çikolata',
+                        icon: '🍫',
+                        description: 'Gerçek Belçika çikolatasından',
+                        fullDescription: 'Premium Belçika çikolatasından hazırlanan, üzeri krema ile servis edilen lüks sıcak çikolata.',
+                        ingredients: 'Belçika çikolata, süt, krema',
+                        allergens: 'Süt ürünü, kakao içerir',
+                        price: '50₺'
+                    },
+                    {
+                        id: 'cay',
+                        name: 'Çay',
+                        icon: '🍵',
+                        description: 'Geleneksel demleme çay',
+                        fullDescription: 'Rize\'nin en iyi çay bahçelerinden, özenle seçilmiş yapraklardan demlenen aromatik çay.',
+                        ingredients: 'Siyah çay yaprakları',
+                        allergens: 'Kafein içerir',
+                        price: '25₺'
+                    }
+                ]
+            },
+            sogukIcecekler: {
+                name: 'Soğuk İçecekler',
+                icon: '🧊',
+                products: [
+                    {
+                        id: 'ice-latte',
+                        name: 'Ice Latte',
+                        icon: '🧊',
+                        description: 'Buzlu soğuk kahve',
+                        fullDescription: 'Soğuk süt ve espresso\'nun ferahlatıcı buluşması, bol buzlu.',
+                        ingredients: 'Espresso, soğuk süt, buz',
+                        allergens: 'Süt ürünü, kafein içerir',
+                        price: '60₺'
+                    },
+                    {
+                        id: 'frappe',
+                        name: 'Frappe',
+                        icon: '🧊',
+                        description: 'Köpüklü buzlu kahve',
+                        fullDescription: 'Blenderdan geçirilmiş espresso ve buz, üzerinde köpüklü süt.',
+                        ingredients: 'Espresso, süt, buz, şeker',
+                        allergens: 'Süt ürünü, kafein içerir',
+                        price: '65₺'
+                    },
+                    {
+                        id: 'ice-mocha',
+                        name: 'Ice Mocha',
+                        icon: '🧊',
+                        description: 'Soğuk çikolatalı kahve',
+                        fullDescription: 'Espresso, çikolata sosu ve soğuk süt, üzeri krema ile.',
+                        ingredients: 'Espresso, çikolata sosu, süt, buz, krema',
+                        allergens: 'Süt ürünü, kakao, kafein içerir',
+                        price: '65₺'
+                    },
+                    {
+                        id: 'limonata',
+                        name: 'Ev Yapımı Limonata',
+                        icon: '🍋',
+                        description: 'Taze sıkılmış limon',
+                        fullDescription: 'Taze sıkılmış limon suyu, nane yaprakları ve hafif şeker şurubu ile ferahlatıcı.',
+                        ingredients: 'Limon, nane, şeker, soda',
+                        allergens: 'Alerjeni yoktur',
+                        price: '45₺'
+                    },
+                    {
+                        id: 'milkshake',
+                        name: 'Milkshake',
+                        icon: '🥤',
+                        description: 'Vanilyalı / Çikolatalı / Çilekli',
+                        fullDescription: 'Premium dondurma ile hazırlanan kremamsı milkshake, çeşitli aromalar.',
+                        ingredients: 'Dondurma, süt, aroma',
+                        allergens: 'Süt ürünü içerir',
+                        price: '55₺'
+                    },
+                    {
+                        id: 'smoothie',
+                        name: 'Smoothie',
+                        icon: '🍓',
+                        description: 'Mevsim meyveli',
+                        fullDescription: 'Taze mevsim meyveleri, yoğurt ve balla hazırlanan sağlıklı smoothie.',
+                        ingredients: 'Mevsim meyveleri, yoğurt, bal, buz',
+                        allergens: 'Süt ürünü içerir',
+                        price: '50₺'
+                    },
+                    {
+                        id: 'ice-tea',
+                        name: 'Ice Tea',
+                        icon: '🍹',
+                        description: 'Şeftali / Limon',
+                        fullDescription: 'Soğuk demlenmiş çay, doğal meyve aroması ile ferahlatıcı.',
+                        ingredients: 'Çay, meyve özü, şeker, buz',
+                        allergens: 'Kafein içerir',
+                        price: '40₺'
+                    }
+                ]
+            },
+            tatlilar: {
+                name: 'Tatlılar',
+                icon: '🍰',
+                products: [
+                    {
+                        id: 'cheesecake',
+                        name: 'Cheesecake',
+                        icon: '🍰',
+                        description: 'Orman meyveli / Çilekli',
+                        fullDescription: 'Kremamsı Philadelphia peyniri ile hazırlanan klasik New York cheesecake, taze meyvelerle.',
+                        ingredients: 'Krem peynir, yumurta, kurabiye, meyve',
+                        allergens: 'Süt ürünü, yumurta, glüten içerir',
+                        price: '75₺'
+                    },
+                    {
+                        id: 'brownie',
+                        name: 'Brownie',
+                        icon: '🍫',
+                        description: 'Vanilyalı dondurma ile',
+                        fullDescription: 'Sıcak servis edilen çikolatalı brownie, üzerinde vanilyalı dondurma ve çikolata sosu.',
+                        ingredients: 'Çikolata, un, yumurta, tereyağı, dondurma',
+                        allergens: 'Süt ürünü, yumurta, glüten, kakao içerir',
+                        price: '65₺'
+                    },
+                    {
+                        id: 'tiramisu',
+                        name: 'Tiramisu',
+                        icon: '🍮',
+                        description: 'İtalyan klasiği',
+                        fullDescription: 'Espresso ile ıslatılmış kedi dili, mascarpone peyniri ve kakao ile hazırlanan İtalyan tatlısı.',
+                        ingredients: 'Kedi dili, espresso, mascarpone, yumurta, kakao',
+                        allergens: 'Süt ürünü, yumurta, glüten, kafein içerir',
+                        price: '70₺'
+                    },
+                    {
+                        id: 'san-sebastian',
+                        name: 'San Sebastian',
+                        icon: '🧀',
+                        description: 'Yanık cheesecake',
+                        fullDescription: 'İspanya\'nın meşhur yanık yüzeyli cheesecake\'i, içi kremalı dışı karamelimsi.',
+                        ingredients: 'Krem peynir, yumurta, şeker, krema',
+                        allergens: 'Süt ürünü, yumurta içerir',
+                        price: '70₺'
+                    },
+                    {
+                        id: 'supangle',
+                        name: 'Supangle',
+                        icon: '🍫',
+                        description: 'Çikolatalı muhallebi',
+                        fullDescription: 'Yoğun çikolatalı muhallebi, üzeri çikolata sosu ve ceviz ile.',
+                        ingredients: 'Süt, çikolata, nişasta, ceviz',
+                        allergens: 'Süt ürünü, kakao, kuruyemiş içerir',
+                        price: '55₺'
+                    },
+                    {
+                        id: 'profiterol',
+                        name: 'Profiterol',
+                        icon: '🍮',
+                        description: 'Çikolata soslu',
+                        fullDescription: 'Vanilyalı dondurma doldurulmuş hamur topları, sıcak çikolata sosu ile.',
+                        ingredients: 'Hamur, dondurma, çikolata sosu',
+                        allergens: 'Süt ürünü, yumurta, glüten, kakao içerir',
+                        price: '65₺'
+                    }
+                ]
+            },
+            aperatifler: {
+                name: 'Aperatifler',
+                icon: '🥪',
+                products: [
+                    {
+                        id: 'club-sandvic',
+                        name: 'Club Sandwich',
+                        icon: '🥪',
+                        description: 'Tavuklu üçlü sandviç',
+                        fullDescription: 'Izgara tavuk, bacon, marul, domates ve özel soslu üç katlı sandviç, patates cipsi ile.',
+                        ingredients: 'Tost ekmeği, tavuk, bacon, sebze, sos',
+                        allergens: 'Glüten, yumurta içerir',
+                        price: '85₺'
+                    },
+                    {
+                        id: 'waffle',
+                        name: 'Waffle',
+                        icon: '🧇',
+                        description: 'Çikolata / Meyve / Bal-tereyağı',
+                        fullDescription: 'Taze pişirilmiş Belçika waffle\'ı, seçtiğiniz soslar ve taze meyvelerle.',
+                        ingredients: 'Hamur, yumurta, süt, seçtiğiniz sos',
+                        allergens: 'Glüten, süt ürünü, yumurta içerir',
+                        price: '70₺'
+                    },
+                    {
+                        id: 'krep',
+                        name: 'Krep',
+                        icon: '🥞',
+                        description: 'Tuzlu / Tatlı seçenekler',
+                        fullDescription: 'İnce Fransız krepi, peynir-sucuk veya çikolata-muz gibi çeşitli dolgu seçenekleri ile.',
+                        ingredients: 'Krep hamuru, dolgu malzemeleri',
+                        allergens: 'Glüten, süt ürünü, yumurta içerir',
+                        price: '65₺'
+                    },
+                    {
+                        id: 'tost',
+                        name: 'Tost',
+                        icon: '🍞',
+                        description: 'Klasik / Karışık',
+                        fullDescription: 'Kaşar peyniri ve dilediğiniz ekstralar ile kızarmış lezzetli tost.',
+                        ingredients: 'Tost ekmeği, kaşar, ekstralar (sucuk, sosis vb.)',
+                        allergens: 'Glüten, süt ürünü içerir',
+                        price: '50₺'
+                    },
+                    {
+
+{
+    id: 'patates-kizartmasi',
+    name: 'Patates Kızartması',
+    icon: '🍟',
+    description: 'Özel baharatlı, çıtır',
+    fullDescription: 'Altın sarısı çıtır patates kızartması, özel baharat karışımı ve soslar ile servis edilir.',
+    ingredients: 'Patates, bitkisel yağ, baharat',
+    allergens: 'Alerjen içermez',
+    price: '45₺'
+}
+                ]
+            }
+        };
+
+</script>
+</body>
+</html>
